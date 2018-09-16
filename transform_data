@@ -1,0 +1,65 @@
+import pandas as pd
+import numpy as np
+import pickle
+import json
+
+
+data = pd.read_csv('data/original_data/train.csv',low_memory=False)
+
+
+dict_cols  = ['device','geoNetwork','totals','trafficSource']
+
+col_key_dict = {}
+for col in dict_cols:
+    data[col]= list(map(lambda x: json.loads(x), data[col]))
+
+
+    all_col_vals = set()
+    for i in range(100000):
+        all_col_vals = all_col_vals.union(set(data.loc[i,col].keys()))
+    col_key_dict[col] = list(all_col_vals)
+    for key in col_key_dict[col]:
+        data[col+'_'+key] = list(map(lambda x: x.get(key), data[col]))
+
+not_avail_cols = []
+for col in data.columns:
+    if data.loc[0,col]=='not available in demo dataset':
+        not_avail_cols.append(col)
+
+data = data.drop(columns=not_avail_cols+dict_cols+['trafficSource_adwordsClickInfo'])
+data.to_pickle('data/train.p')
+
+
+
+data = pd.read_csv('data/original_data/test.csv',low_memory=False)
+
+
+dict_cols  = ['device','geoNetwork','totals','trafficSource']
+
+col_key_dict = {}
+for col in dict_cols:
+    data[col]= list(map(lambda x: json.loads(x), data[col]))
+
+
+    all_col_vals = set()
+    for i in range(100000):
+        all_col_vals = all_col_vals.union(set(data.loc[i,col].keys()))
+    col_key_dict[col] = list(all_col_vals)
+    for key in col_key_dict[col]:
+        data[col+'_'+key] = list(map(lambda x: x.get(key), data[col]))
+
+not_avail_cols = []
+for col in data.columns:
+    if data.loc[0,col]=='not available in demo dataset':
+        not_avail_cols.append(col)
+
+data = data.drop(columns=not_avail_cols+dict_cols+['trafficSource_adwordsClickInfo'])
+data.to_pickle('data/test.p')
+
+
+
+
+
+
+
+
