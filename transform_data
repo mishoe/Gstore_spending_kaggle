@@ -2,9 +2,10 @@ import pandas as pd
 import numpy as np
 import pickle
 import json
+import gc
 
 
-data = pd.read_csv('data/original_data/train.csv',low_memory=False)
+data = pd.read_csv('data/original_data/train_v2.csv',low_memory=False)
 
 
 dict_cols  = ['device','geoNetwork','totals','trafficSource']
@@ -27,11 +28,12 @@ for col in data.columns:
         not_avail_cols.append(col)
 
 data = data.drop(columns=not_avail_cols+dict_cols+['trafficSource_adwordsClickInfo'])
+gc.collect()
 data.to_pickle('data/train.p')
 
 
 
-data = pd.read_csv('data/original_data/test.csv',low_memory=False)
+data = pd.read_csv('data/original_data/test_v2.csv',low_memory=False)
 
 
 dict_cols  = ['device','geoNetwork','totals','trafficSource']

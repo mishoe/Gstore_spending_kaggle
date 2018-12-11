@@ -8,6 +8,9 @@ from bdateutil import isbday
 import numpy as np
 date_col = 'date'
 
+
+#data = pd.read_csv('data/test_v2.csv')
+
 #train data from 8/1/2016 - 8/1/2017
 data = pd.read_pickle('data/train.p')
 #test_data from  8/2/2017 - 4/30/2018
